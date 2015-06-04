@@ -301,10 +301,10 @@ function setup() {
   var Neptune = new planet(3.85, 0x3333cc, 30.07, .009, 164.8, 2);
   
   var Moon = new moon(.273,0x6d6d6d, .003,.055,.075,0,Earth);
-  var Io = new moon(.286,0x996600,.002*9,.004,.005,1,Jupiter);
-  var Europa = new moon(.245,0xccffff,.0045*9,.009,.01,2.1,Jupiter);
-  var Ganymede = new moon(.413,0x767676,.007*9,.001,.02,3.5,Jupiter);
-  var Callisto = new moon(.378,0x293333,.012*9,.007,.046,5.3,Jupiter);
+  var Io = new moon(.286,0x996600,.003*6,.004,.005,1,Jupiter);
+  var Europa = new moon(.245,0xccffff,.0045*6,.009,.01,2.1,Jupiter);
+  var Ganymede = new moon(.413,0x767676,.007*6,.001,.02,3.5,Jupiter);
+  var Callisto = new moon(.378,0x293333,.012*6,.007,.046,5.3,Jupiter);
   var Titan = new moon(.404,0xe6b85c,.008*6,.029,.044,6,Saturn);
   
   
