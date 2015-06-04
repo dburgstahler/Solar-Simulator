@@ -55,6 +55,7 @@ function setup() {
   var ecc = "NA";
   var period = "NA";
   var day = "NA";
+  var moon = "NA";
   
   var labelText = createDiv("<font color='white'>Name: "+label+"</font>");
   labelText.position(window.innerWidth-145,450);
@@ -72,6 +73,8 @@ function setup() {
   periodText.position(window.innerWidth-145,570);
   var dayText = createDiv("<font color='white'>Day Length: "+day+"</font>");
   dayText.position(window.innerWidth-145,590);
+  var moonText = createDiv("<font color='white'>Moon(s): "+moon+"</font>");
+  moonText.position(window.innerWidth-145,610);
   
   function updateTexts() {
   labelText.hide();
@@ -82,6 +85,7 @@ function setup() {
   eccText.hide();
   periodText.hide();
   dayText.hide();
+  moonText.hide();
   
   labelText = createDiv("<font color='white'>Name: "+label+"</font>");
   labelText.position(window.innerWidth-145,450);
@@ -99,6 +103,8 @@ function setup() {
   periodText.position(window.innerWidth-145,570);
   dayText = createDiv("<font color='white'>Day Length: "+day+"</font>");
   dayText.position(window.innerWidth-145,590);
+  moonText = createDiv("<font color='white'>Moon(s): "+moon+"</font>");
+  moonText.position(window.innerWidth-145,610);
   
   labelText.show();
   classText.show();
@@ -108,6 +114,7 @@ function setup() {
   eccText.show();
   periodText.show();
   dayText.show();
+  moonText.show();
   
   }
   
@@ -364,6 +371,7 @@ function setup() {
     ecc = "NA";
     period = "NA";
     day = "NA";
+    moon = "NA";
     updateTexts();
 	});
 	mercuryButton.mousePressed(function() {
@@ -377,6 +385,7 @@ function setup() {
     ecc = ".206";
     period = ".241 yr";
     day = "1408 d";
+    moon = "NA";
     updateTexts();
   
 	});
@@ -391,6 +400,7 @@ function setup() {
     ecc = ".007";
     period = ".615 yr";
     day = "243 d";
+    moon = "NA";
     updateTexts();
 	});
 	earthButton.mousePressed(function() {
@@ -404,6 +414,7 @@ function setup() {
     ecc = ".017";
     period = "1 yr";
     day = "1 d";
+    moon = "The Moon";
     updateTexts();
 	});
 	marsButton.mousePressed(function() {
@@ -417,6 +428,7 @@ function setup() {
     ecc = ".094";
     period = "1.88 yr";
     day = "1.03 d";
+    moon = "NA";
     updateTexts();
 	});
 	jupiterButton.mousePressed(function() {
@@ -430,6 +442,7 @@ function setup() {
     ecc = ".049";
     period = "11.9 yr";
     day = "9.925 hr";
+    moon = "Io, Europa, Ganymede, Callisto";
     updateTexts();
 	});
 	saturnButton.mousePressed(function() {
@@ -443,6 +456,7 @@ function setup() {
     ecc = ".056";
     period = "29.5 yr";
     day = "10.6 hr";
+    moon = "Titan";
     updateTexts();
 	});
 	uranusButton.mousePressed(function() {
@@ -456,6 +470,7 @@ function setup() {
     ecc = ".047";
     period = "84 yr";
     day = "17.2 hr";
+    moon = "NA";
     updateTexts();
 	});
 	neptuneButton.mousePressed(function() {
@@ -469,6 +484,7 @@ function setup() {
     ecc = ".009";
     period = "165 yr";
     day = "16.1 hr";
+    moon = "NA";
     updateTexts();
 	});
 	
