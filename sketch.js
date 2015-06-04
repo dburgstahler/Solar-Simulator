@@ -390,7 +390,7 @@ function setup() {
   
 	});
 	venusButton.mousePressed(function() {
-	  zoom = 10;
+	  zoom = 20;
     centerPlanetLocation = Venus.planetSphere.position;
     label = "Venus";
     classification = "Planet";
@@ -404,7 +404,7 @@ function setup() {
     updateTexts();
 	});
 	earthButton.mousePressed(function() {
-	  zoom = 10;
+	  zoom = 20;
     centerPlanetLocation = Earth.planetSphere.position;
     label = "Earth";
     classification = "Planet";
@@ -432,7 +432,7 @@ function setup() {
     updateTexts();
 	});
 	jupiterButton.mousePressed(function() {
-	  zoom = 80;
+	  zoom = 120;
     centerPlanetLocation = Jupiter.planetSphere.position;
     label = "Jupiter";
     classification = "Planet";
@@ -446,7 +446,7 @@ function setup() {
     updateTexts();
 	});
 	saturnButton.mousePressed(function() {
-	  zoom = 80;
+	  zoom = 120;
     centerPlanetLocation =Saturn.planetSphere.position;
     label = "Saturn";
     classification = "Planet";
