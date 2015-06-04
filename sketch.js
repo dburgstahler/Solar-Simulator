@@ -179,7 +179,89 @@ function setup() {
     
   }
   
+  var moon = function(size,color,a,e,p,stheta,ctr) {//needs: size,color,a, eccentricity, period, startAngle, planet
+    size = size*4;//make regular and 4x sphere
+    this.size = size;
+    
+    var pgeometry = new THREE.SphereGeometry(size,50,50);
+    var pmaterial = new THREE.MeshPhongMaterial( {color : color} );
+    var moonSphere = new THREE.Mesh(pgeometry, pmaterial);
+    scene.add(moonSphere);
+    this.moonSphere = moonSphere;
+    a = a*3000;
+    var c = a*e;
+    var b = sqrt(a*a-c*c);
+    
+    this.a = a;
+    this.b = b;
+    this.c = c;
+    var curve = new THREE.EllipseCurve(c,0,a,b,0,2*Math.PI,false);
+    var path = new THREE.Path(curve.getPoints(10000));
+    var ogeometry = path.createPointsGeometry( 10000 );
+    var omaterial = new THREE.LineBasicMaterial( { color : 0xffffff } );
+    
+    var orbit = new THREE.Line( ogeometry, omaterial );
+    scene.add(orbit);
+    this.orbit = orbit;
+    
+    ////
+    var center = new THREE.Vector3();
+    center.copy(ctr.planetSphere.position);
+    this.center = center;
+    this.ctr = ctr;
+    
+    this.orbit.position.copy(center);
+    center.x = center.x +c;
+    ////
+    var planetA = new THREE.Vector3();
+    var planetB = new THREE.Vector3();
+    var moonLocation = new THREE.Vector3();
+    var majAxis = new THREE.Vector3(1,0,0);
+    var minAxis = new THREE.Vector3(0,1,0);
+    
+    var theta = stheta;
+    this.theta = theta;
+    this.p = p;
+    //this.i = i;
+    
+    planetA.copy(majAxis.multiplyScalar(a*cos(theta)));
+    planetB.copy(minAxis.multiplyScalar(b*sin(theta)));
+    moonLocation.copy(center.add(planetA.add(planetB)));
+    
+    moonSphere.position.copy(moonLocation);
+    this.moonSphere = moonSphere;
+    
+  }
   
+  moon.prototype.move = function() {
+    this.center.copy(this.ctr.planetSphere.position);
+    /*
+    var curve = new THREE.EllipseCurve(this.center.x-this.c,this.center.y,this.a,this.b,0,2*Math.PI,false);
+    var path = new THREE.Path(curve.getPoints(10000));
+    var ogeometry = path.createPointsGeometry( 10000 );
+    var omaterial = new THREE.LineBasicMaterial( { color : 0xffffff } );
+    
+    var orbit = new THREE.Line( ogeometry, omaterial );
+    */
+    this.orbit.position.copy(this.center);
+    this.center.x = this.center.x +this.c; 
+    
+    var mAxis = new THREE.Vector3(1,0,0);
+    var miAxis = new THREE.Vector3(0,1,0);
+    
+    var planetA = new THREE.Vector3();
+    var planetB = new THREE.Vector3();
+    var planetLocation = new THREE.Vector3();
+    
+    planetA.copy(mAxis.multiplyScalar(this.a*cos(this.theta)));
+    planetB.copy(miAxis.multiplyScalar(this.b*sin(this.theta)));
+    planetLocation.copy(this.center.add(planetA.add(planetB)));
+    this.moonSphere.position.copy(planetLocation);
+    
+    var i = (timeSlider.value()/1000)/this.p;
+    this.theta = this.theta + i;
+    
+  }
   
   
   planet.prototype.move = function() {
@@ -217,6 +299,14 @@ function setup() {
   var Saturn = new planet(8.9, 0xd1a319, 9.582, .056, 29.457, 5);
   var Uranus = new planet(3.97,0x99ccff, 19.189, .047,84.01, 6);
   var Neptune = new planet(3.85, 0x3333cc, 30.07, .009, 164.8, 2);
+  
+  var Moon = new moon(.273,0x6d6d6d, .003,.055,.075,0,Earth);
+  var Io = new moon(.286,0x996600,.002*9,.004,.005,1,Jupiter);
+  var Europa = new moon(.245,0xccffff,.0045*9,.009,.01,2.1,Jupiter);
+  var Ganymede = new moon(.413,0x767676,.007*9,.001,.02,3.5,Jupiter);
+  var Callisto = new moon(.378,0x293333,.012*9,.007,.046,5.3,Jupiter);
+  var Titan = new moon(.404,0xe6b85c,.008*6,.029,.044,6,Saturn);
+  
   
   var sgeometry = new THREE.SphereGeometry( 25, 50, 50 );
   var smaterial = new THREE.MeshPhongMaterial( {color: 0xffff00} );
@@ -393,6 +483,12 @@ function setup() {
       scene.remove(Saturn.orbit);
       scene.remove(Uranus.orbit);
       scene.remove(Neptune.orbit);
+      scene.remove(Moon.orbit);
+      scene.remove(Io.orbit);
+      scene.remove(Europa.orbit);
+      scene.remove(Ganymede.orbit);
+      scene.remove(Callisto.orbit);
+      scene.remove(Titan.orbit);
       orbitsShown = false;
     }
     else {
@@ -404,6 +500,12 @@ function setup() {
       scene.add(Saturn.orbit);
       scene.add(Uranus.orbit);
       scene.add(Neptune.orbit);
+      scene.add(Moon.orbit);
+      scene.add(Io.orbit);
+      scene.add(Europa.orbit);
+      scene.add(Ganymede.orbit);
+      scene.add(Callisto.orbit);
+      scene.add(Titan.orbit);
       orbitsShown = true;
     }
     
@@ -444,7 +546,14 @@ function render() {
 	  Saturn.move();
 	  Uranus.move();
 	  Neptune.move();
+	  Moon.move();
+	  Io.move();
+	  Europa.move();
+	  Ganymede.move();
+	  Callisto.move();
+	  Titan.move();
 	}
+	
 	
 	//var majAxis = new THREE.Vector3(1,0,0);
   //var minAxis = new THREE.Vector3(0,1,0);
