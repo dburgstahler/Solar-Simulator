@@ -5,44 +5,46 @@ function setup() {
   
   //fill(0,0,0);
   //ellipse(10,10,100,100);
-  var timeSlider = createSlider(1,100);
-  timeSlider.position(900,70);
+  var timeDescription = createDiv("<font color='white'>Orbit Speed Slow->Fast</font>");
+  timeDescription.position(window.innerWidth-100,30);
+  var timeSlider = createSlider(1,100,1);
+  timeSlider.position(window.innerWidth-100,70);
   timeSlider.size(90,10);
   move = false;
   var startButton = createButton("start");
-  startButton.position(980,100);
+  startButton.position(window.innerWidth-50,100);
   startButton.mousePressed(function() {
     move = true;
   });
   var stopButton = createButton("stop");
-  stopButton.position(980,120);
+  stopButton.position(window.innerWidth-50,120);
   stopButton.mousePressed(function() {
     move = false;
   });
   
   
   var systemButton = createButton("Solar System");
-  systemButton.position(965, 160);
+  systemButton.position(window.innerWidth-85, 160);
   var mercuryButton = createButton("Mercury");
-  mercuryButton.position(965,200);
+  mercuryButton.position(window.innerWidth-70,200);
   var venusButton = createButton("Venus");
-  venusButton.position(965,220);
+  venusButton.position(window.innerWidth-70,220);
   var earthButton = createButton("Earth");
-  earthButton.position(965,240);
+  earthButton.position(window.innerWidth-70,240);
   var marsButton = createButton("Mars");
-  marsButton.position(965,260);
+  marsButton.position(window.innerWidth-70,260);
   var jupiterButton = createButton("Jupiter");
-  jupiterButton.position(965,280);
+  jupiterButton.position(window.innerWidth-70,280);
   var saturnButton = createButton("Saturn");
-  saturnButton.position(965,300);
+  saturnButton.position(window.innerWidth-70,300);
   var uranusButton = createButton("Uranus");
-  uranusButton.position(965,320);
+  uranusButton.position(window.innerWidth-70,320);
   var neptuneButton = createButton("Neptune");
-  neptuneButton.position(965,340);
+  neptuneButton.position(window.innerWidth-70,340);
   
   var orbits = createButton("Show Orbits");
   var orbitsShown = true;
-  orbits.position(960,370);
+  orbits.position(window.innerWidth-80,370);
   
   
   var label = "Sun";
@@ -55,21 +57,21 @@ function setup() {
   var day = "NA";
   
   var labelText = createDiv("<font color='white'>Name: "+label+"</font>");
-  labelText.position(880,450);
+  labelText.position(window.innerWidth-145,450);
   var classText = createDiv("<font color='white'>Class: "+classification+"</font>");
-  classText.position(880,470);
+  classText.position(window.innerWidth-145,470);
   var massText = createDiv("<font color='white'>Mass: "+mass+"</font>");
-  massText.position(880,490);
+  massText.position(window.innerWidth-145,490);
   var radiusText = createDiv("<font color='white'>Radius: "+radius+"</font>");
-  radiusText.position(880,510);
+  radiusText.position(window.innerWidth-145,510);
   var smaxisText = createDiv("<font color='white'>S-maj Axis: "+smaxis+"</font>");
-  smaxisText.position(880,530);
+  smaxisText.position(window.innerWidth-145,530);
   var eccText = createDiv("<font color='white'>Eccentricity: "+ecc+"</font>");
-  eccText.position(880,550);
+  eccText.position(window.innerWidth-145,550);
   var periodText = createDiv("<font color='white'>Period: "+period+"</font>");
-  periodText.position(880,570);
+  periodText.position(window.innerWidth-145,570);
   var dayText = createDiv("<font color='white'>Day Length: "+day+"</font>");
-  dayText.position(880,590);
+  dayText.position(window.innerWidth-145,590);
   
   function updateTexts() {
   labelText.hide();
@@ -82,21 +84,21 @@ function setup() {
   dayText.hide();
   
   labelText = createDiv("<font color='white'>Name: "+label+"</font>");
-  labelText.position(880,450);
+  labelText.position(window.innerWidth-145,450);
   classText = createDiv("<font color='white'>Class: "+classification+"</font>");
-  classText.position(880,470);
+  classText.position(window.innerWidth-145,470);
   massText = createDiv("<font color='white'>Mass: "+mass+"</font>");
-  massText.position(880,490);
+  massText.position(window.innerWidth-145,490);
   radiusText = createDiv("<font color='white'>Radius: "+radius+"</font>");
-  radiusText.position(880,510);
+  radiusText.position(window.innerWidth-145,510);
   smaxisText = createDiv("<font color='white'>S-maj Axis: "+smaxis+"</font>");
-  smaxisText.position(880,530);
+  smaxisText.position(window.innerWidth-145,530);
   eccText = createDiv("<font color='white'>Eccentricity: "+ecc+"</font>");
-  eccText.position(880,550);
+  eccText.position(window.innerWidth-145,550);
   periodText = createDiv("<font color='white'>Period: "+period+"</font>");
-  periodText.position(880,570);
+  periodText.position(window.innerWidth-145,570);
   dayText = createDiv("<font color='white'>Day Length: "+day+"</font>");
-  dayText.position(880,590);
+  dayText.position(window.innerWidth-145,590);
   
   labelText.show();
   classText.show();
