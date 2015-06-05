@@ -3,26 +3,24 @@ function setup() {
   canvas = createCanvas(0,0);
   background(0);
   
-  //fill(0,0,0);
-  //ellipse(10,10,100,100);
-  var timeDescription = createDiv("<font color='white'>Orbit Speed Slow->Fast</font>");
+  var timeDescription = createDiv("<font color='white'>Orbit Speed Slow->Fast</font>");//description for slider
   timeDescription.position(window.innerWidth-100,30);
-  var timeSlider = createSlider(1,100,1);
+  var timeSlider = createSlider(1,100,1);//slider for changing animation speed
   timeSlider.position(window.innerWidth-100,70);
   timeSlider.size(90,10);
-  move = false;
-  var startButton = createButton("start");
+  move = false;// determines if animation is started or stopped
+  var startButton = createButton("start");//start animation
   startButton.position(window.innerWidth-50,100);
   startButton.mousePressed(function() {
     move = true;
   });
-  var stopButton = createButton("stop");
+  var stopButton = createButton("stop");//stop animation
   stopButton.position(window.innerWidth-50,120);
   stopButton.mousePressed(function() {
     move = false;
   });
   
-  
+  //Buttons for centering on objects
   var systemButton = createButton("Solar System");
   systemButton.position(window.innerWidth-85, 160);
   var mercuryButton = createButton("Mercury");
@@ -42,11 +40,12 @@ function setup() {
   var neptuneButton = createButton("Neptune");
   neptuneButton.position(window.innerWidth-70,340);
   
-  var orbits = createButton("Show Orbits");
+  
+  var orbits = createButton("Show Orbits");//Shows/hides orbits
   var orbitsShown = true;
   orbits.position(window.innerWidth-80,370);
   
-  
+  //Data for object text description
   var label = "Sun";
   var classification = "Star";
   var mass = "1.98*10^30 kg";
@@ -76,7 +75,7 @@ function setup() {
   var moonText = createDiv("<font color='white'>Moon(s): "+moon+"</font>");
   moonText.position(window.innerWidth-145,610);
   
-  function updateTexts() {
+  function updateTexts() {//updates text with data from new object
   labelText.hide();
   classText.hide();
   massText.hide();
@@ -121,30 +120,26 @@ function setup() {
 ///////////////////////////////////////////
   
   var scene = new THREE.Scene();
-  //scene.position.x = 100;
   var camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.1, 20000 );
 
   var renderer = new THREE.WebGLRenderer();
   renderer.setClearColor(30);
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
-  var sunLight = new THREE.PointLight( 0xffffff, 0.75 );
+  var sunLight = new THREE.PointLight( 0xffffff, 0.75 );//light centered on sun that illuminates planets and moons
   scene.add( sunLight );
   
-  //var light = new THREE.AmbientLight( 0x00004f, .01 ); 
-  //scene.add( light );
-  
-  
+  //planet class creates planet sphere and orbit and adds them to scene
   var planet = function(size,color,a,e,p,stheta) {//needs: size,color,a, eccentricity, period, startAngle
     
-    size = size*4;//make regular and 4x sphere
+    size = size*4;//make sphere 4x bigger
     this.size = size;
     
     
     var pgeometry = new THREE.SphereGeometry(size,50,50);
     var pmaterial = new THREE.MeshPhongMaterial( {color : color} );
     var planetSphere = new THREE.Mesh(pgeometry, pmaterial);
-    scene.add(planetSphere);
+    scene.add(planetSphere);//adds sphere to scene
     this.planetSphere = planetSphere;
     a = a*200;
     var c = a*e;
@@ -161,7 +156,7 @@ function setup() {
     var omaterial = new THREE.LineBasicMaterial( { color : 0xffffff } );
     
     var orbit = new THREE.Line( ogeometry, omaterial );
-    scene.add(orbit);
+    scene.add(orbit);//adds orbital ellipse to scene
     this.orbit = orbit;
     
     var center = new THREE.Vector3(0-c,0,0);
@@ -181,11 +176,12 @@ function setup() {
     planetB.copy(minAxis.multiplyScalar(b*sin(theta)));
     planetLocation.copy(center.add(planetA.add(planetB)));
     
-    planetSphere.position.copy(planetLocation);
+    planetSphere.position.copy(planetLocation);//places planet on orbit
     this.planetSphere = planetSphere;
     
   }
   
+  //moon class creates moon sphere and orbit centered on a planet and adds it to scene
   var moon = function(size,color,a,e,p,stheta,ctr) {//needs: size,color,a, eccentricity, period, startAngle, planet
     size = size*4;//make regular and 4x sphere
     this.size = size;
@@ -193,7 +189,7 @@ function setup() {
     var pgeometry = new THREE.SphereGeometry(size,50,50);
     var pmaterial = new THREE.MeshPhongMaterial( {color : color} );
     var moonSphere = new THREE.Mesh(pgeometry, pmaterial);
-    scene.add(moonSphere);
+    scene.add(moonSphere);//adds sphere to scene
     this.moonSphere = moonSphere;
     a = a*3000;
     var c = a*e;
@@ -208,7 +204,7 @@ function setup() {
     var omaterial = new THREE.LineBasicMaterial( { color : 0xffffff } );
     
     var orbit = new THREE.Line( ogeometry, omaterial );
-    scene.add(orbit);
+    scene.add(orbit);//adds orbit to scene
     this.orbit = orbit;
     
     ////
@@ -235,45 +231,12 @@ function setup() {
     planetB.copy(minAxis.multiplyScalar(b*sin(theta)));
     moonLocation.copy(center.add(planetA.add(planetB)));
     
-    moonSphere.position.copy(moonLocation);
+    moonSphere.position.copy(moonLocation);//places moon on orbit
     this.moonSphere = moonSphere;
     
   }
   
-  moon.prototype.move = function() {
-    this.center.copy(this.ctr.planetSphere.position);
-    /*
-    var curve = new THREE.EllipseCurve(this.center.x-this.c,this.center.y,this.a,this.b,0,2*Math.PI,false);
-    var path = new THREE.Path(curve.getPoints(10000));
-    var ogeometry = path.createPointsGeometry( 10000 );
-    var omaterial = new THREE.LineBasicMaterial( { color : 0xffffff } );
-    
-    var orbit = new THREE.Line( ogeometry, omaterial );
-    */
-    this.orbit.position.copy(this.center);
-    this.center.x = this.center.x +this.c; 
-    
-    var mAxis = new THREE.Vector3(1,0,0);
-    var miAxis = new THREE.Vector3(0,1,0);
-    
-    var planetA = new THREE.Vector3();
-    var planetB = new THREE.Vector3();
-    var planetLocation = new THREE.Vector3();
-    
-    planetA.copy(mAxis.multiplyScalar(this.a*cos(this.theta)));
-    planetB.copy(miAxis.multiplyScalar(this.b*sin(this.theta)));
-    planetLocation.copy(this.center.add(planetA.add(planetB)));
-    this.moonSphere.position.copy(planetLocation);
-    
-    var i = (timeSlider.value()/1000)/this.p;
-    this.theta = this.theta + i;
-    
-  }
-  
-  
   planet.prototype.move = function() {
-    
-    
    
     var center = new THREE.Vector3(0-this.c,0,0);
     
@@ -289,15 +252,32 @@ function setup() {
     planetLocation.copy(center.add(planetA.add(planetB)));
     this.planetSphere.position.copy(planetLocation);
     
-    var i = (timeSlider.value()/1000)/this.p;
+    var i = (timeSlider.value()/1000)/this.p;//angle added each time based on slider
     this.theta = this.theta + i;
     
   }
-  
-  //var xxx = new planet(25,0xff00ff,220,.1,.01,0);
-  
-  //var yyy = new planet(.323,0x00ff00, 3, .2, .005, 0);
-  
+  moon.prototype.move = function() {
+    this.center.copy(this.ctr.planetSphere.position);
+    this.orbit.position.copy(this.center);
+    this.center.x = this.center.x +this.c; 
+    
+    var mAxis = new THREE.Vector3(1,0,0);
+    var miAxis = new THREE.Vector3(0,1,0);
+    
+    var planetA = new THREE.Vector3();
+    var planetB = new THREE.Vector3();
+    var planetLocation = new THREE.Vector3();
+    
+    planetA.copy(mAxis.multiplyScalar(this.a*cos(this.theta)));
+    planetB.copy(miAxis.multiplyScalar(this.b*sin(this.theta)));
+    planetLocation.copy(this.center.add(planetA.add(planetB)));
+    this.moonSphere.position.copy(planetLocation);
+    
+    var i = (timeSlider.value()/1000)/this.p;//angle added each time based on slider
+    this.theta = this.theta + i;
+    
+  }
+  //Initiate planets and moons
   var Mercury = new planet(.323, 0x6d6d6d, .3871,.206,.241,0);
   var Venus = new planet(.95,0xffffb4,.723,.007,.615,1);
   var Earth = new planet(1,0x000ff, 1, .017, 1, 2);
@@ -318,52 +298,30 @@ function setup() {
   var sgeometry = new THREE.SphereGeometry( 25, 50, 50 );
   var smaterial = new THREE.MeshPhongMaterial( {color: 0xffff00} );
   smaterial.emissive.setRGB(255,150,0);
-  //smaterial.specular.setRGB(255,255,255);
-  //smaterial.shininess = 100;
   var sun = new THREE.Mesh( sgeometry, smaterial );
-  scene.add(sun);
-  
-  //TEST PLANET
-  //var geometry = new THREE.SphereGeometry( 15, 50, 50 );
-  //var material = new THREE.MeshPhongMaterial( {color: 0x00ff00} );
-  //var sphere = new THREE.Mesh( geometry, material );
-  //scene.add( sphere );
-  
-  
-  //var curve = new THREE.EllipseCurve(0,0,160,150,0,2*Math.PI,false);
-  //var path = new THREE.Path( curve.getPoints( 50 ) );
-  //var ogeometry = path.createPointsGeometry( 50 );
-  //var omaterial = new THREE.LineBasicMaterial( { color : 0xffffff } );
-  
-  //var orbit = new THREE.Line( ogeometry, omaterial );
-  
-  //scene.add(orbit);
+  scene.add(sun);//adds sun to scene
   
   
   
   //initial camera
-  
-  
   zoom = 300;
   camera.position.z = zoom; 
   
   //Camera Reset
   var axis = new THREE.Vector3(1,0,0);
   camera.position.applyAxisAngle(axis, Math.PI/2);
-	var center = new THREE.Vector3(0,0,0);
-	
-	//camera.lookAt(center);
-	camera.rotation.x = Math.PI/2;//look(center, camera.position);
+  var center = new THREE.Vector3(0,0,0);
+  camera.rotation.x = Math.PI/2;//look(center, camera.position);
 	
 	
 	
-	//shifts
-	var centerPlanetLocation = new THREE.Vector3();
+  //button behaviors
+  var centerPlanetLocation = new THREE.Vector3();
 	
-	systemButton.mousePressed(function() {
-	  zoom = 300;
-	  centerPlanetLocation = new THREE.Vector3(0,0,0);
-	  label = "Sun";
+  systemButton.mousePressed(function() {
+    zoom = 300;
+    centerPlanetLocation = new THREE.Vector3(0,0,0);
+    label = "Sun";
     classification = "Star";
     mass = "1.98*10^30 kg";
     radius = "696,342 km";
@@ -374,8 +332,8 @@ function setup() {
     moon = "NA";
     updateTexts();
 	});
-	mercuryButton.mousePressed(function() {
-	  zoom = 10;
+mercuryButton.mousePressed(function() {
+    zoom = 10;
     centerPlanetLocation =Mercury.planetSphere.position;
     label = "Mercury";
     classification = "Planet";
@@ -389,8 +347,8 @@ function setup() {
     updateTexts();
   
 	});
-	venusButton.mousePressed(function() {
-	  zoom = 20;
+venusButton.mousePressed(function() {
+    zoom = 20;
     centerPlanetLocation = Venus.planetSphere.position;
     label = "Venus";
     classification = "Planet";
@@ -403,8 +361,8 @@ function setup() {
     moon = "NA";
     updateTexts();
 	});
-	earthButton.mousePressed(function() {
-	  zoom = 20;
+earthButton.mousePressed(function() {
+    zoom = 20;
     centerPlanetLocation = Earth.planetSphere.position;
     label = "Earth";
     classification = "Planet";
@@ -417,8 +375,8 @@ function setup() {
     moon = "The Moon";
     updateTexts();
 	});
-	marsButton.mousePressed(function() {
-	  zoom = 10;
+marsButton.mousePressed(function() {
+    zoom = 10;
     centerPlanetLocation = Mars.planetSphere.position;
     label = "Mars";
     classification = "Planet";
@@ -431,8 +389,8 @@ function setup() {
     moon = "NA";
     updateTexts();
 	});
-	jupiterButton.mousePressed(function() {
-	  zoom = 120;
+jupiterButton.mousePressed(function() {
+    zoom = 120;
     centerPlanetLocation = Jupiter.planetSphere.position;
     label = "Jupiter";
     classification = "Planet";
@@ -445,8 +403,8 @@ function setup() {
     moon = "Io, Europa, Ganymede, Callisto";
     updateTexts();
 	});
-	saturnButton.mousePressed(function() {
-	  zoom = 120;
+saturnButton.mousePressed(function() {
+    zoom = 120;
     centerPlanetLocation =Saturn.planetSphere.position;
     label = "Saturn";
     classification = "Planet";
@@ -459,8 +417,8 @@ function setup() {
     moon = "Titan";
     updateTexts();
 	});
-	uranusButton.mousePressed(function() {
-	  zoom = 50;
+uranusButton.mousePressed(function() {
+    zoom = 50;
     centerPlanetLocation = Uranus.planetSphere.position;
     label = "Uranus";
     classification = "Planet";
@@ -473,8 +431,8 @@ function setup() {
     moon = "NA";
     updateTexts();
 	});
-	neptuneButton.mousePressed(function() {
-	  zoom = 50;
+neptuneButton.mousePressed(function() {
+    zoom = 50;
     centerPlanetLocation = Neptune.planetSphere.position;
     label = "Neptune";
     classification = "Planet";
@@ -526,31 +484,19 @@ function setup() {
     }
     
   });
-	
+
+  //theta = 0;
   
-  
-  
-  
-  
-  //not needed
-  orbitX = 300;
-  orbitY = 300;
-  
-  
-  theta = 0;
-  areaFill = 0;
   
   verticalRotation = 0;
   horrizontalRotation = 0;
   
   //camera
   ctheta = 0;
-  //camera.rotation.z+=ctheta;
-  
   vtheta = .1;
   
   
- 
+//rendering scene
 function render() {
 	requestAnimationFrame( render );
 	if(move === true) {
@@ -570,47 +516,26 @@ function render() {
 	  Titan.move();
 	}
 	
-	
-	//var majAxis = new THREE.Vector3(1,0,0);
-  //var minAxis = new THREE.Vector3(0,1,0);
-	//var planetA = new THREE.Vector3();
-  //var planetB = new THREE.Vector3();
-  //var planetLocation = new THREE.Vector3();
-  center.copy(centerPlanetLocation);
+  center.copy(centerPlanetLocation);//updates center
   var cc = new THREE.Vector3(0,0,0);
   cc.copy(center);
-  
-  //var cameraX = new THREE.Vector3(1,0,0);
-  //var cameraY = new THREE.Vector3(0,1,0);
-  
+  //horrizontal camera movement
   var cameraRadius = sqrt(sq(camera.position.x-cc.x)+sq(camera.position.y-cc.y));//change
-  
   
   ctheta = ctheta + horrizontalRotation;
   cameraX = cc.x + cameraRadius*sin(ctheta);
   cameraY = cc.y + -1*cameraRadius*cos(ctheta);
-  //println(horrizontalRotation);
- // println(ctheta);
-  
   
   camera.position.setX(cameraX);
   camera.position.setY(cameraY);
-  
-  
   
   camera.rotation.order = 'ZXY';
   camera.rotation.z+= horrizontalRotation;
   
   
-  //var raxis = new THREE.Vector3(0,0,0);
-  //raxis.crossVectors(camera.position, majAxis);
-  //raxis.normalize();
-  //camera.position.applyAxisAngle(raxis, horrizontalRotation);
-  //camera.lookAt(center);
-  //camera.position.setZ(sz);
   
   cc.copy(center);
-  
+  //vertical camera movement
   vtheta = vtheta+verticalRotation;
   var xyVector = new THREE.Vector2(cameraX-cc.x,cameraY-cc.y);
   xyVector.setLength(zoom*cos(vtheta));
@@ -619,49 +544,17 @@ function render() {
   camera.position.setY(cc.y+xyVector.y);
   
   camera.position.setZ(zoom*sin(vtheta));
+  camera.rotation.x -= verticalRotation;
   
-  //var vaxis = new THREE.Vector3();
-  //vaxis.crossVectors(camera.position, minAxis);
-  //vaxis.normalize();
-  //camera.position.applyAxisAngle(majAxis, verticalRotation);
 	
-	//var sz = camera.position.z;
-  //var caxis = new THREE.Vector3(0,0,sz);
-  //camera.lookAt(caxis);
-  //camera.rotation.order = 'XYZ';
-	//camera.rotation.setFromVector3(vaxis,'ZXY');
-	camera.rotation.x -= verticalRotation;
-  //camera.lookAt(center);
+  renderer.render( scene, camera );
   
-	//planetA.copy(majAxis.multiplyScalar(a*cos(theta)));
-  //planetB.copy(minAxis.multiplyScalar(b*sin(theta)));
-  //planetLocation.copy(planetA.add(planetB));
-  
-	//sphere.position.copy(planetLocation);
-	
-	//xxx.move();
-	//yyy.move();
-	//Mercury.move();
-	//var xxx = new planet(25,0xff00ff,200,.1,.01,0);
-	
-
-	//sun.rotation.x += .1;
-	
-	renderer.render( scene, camera );
-  //theta = theta + .005;
      
-  }
+  }//render loop
   
   render();
   
-  
-//If we know that the center of the ellipse is at C, with unit vectors 
-//U and V for the major and minor axes, then we can describe the ellipse 
-//in 3-space as...
-//C + a cos(theta) U + b sin(theta) V
-  
-  
-}
+}//setup
 
 
 
@@ -670,11 +563,9 @@ function render() {
 function mouseDragged() {
   if(mouseY > pmouseY) {
     verticalRotation = .01;
-    //horrizontalRotation = 0;
   }
   else if(mouseY<pmouseY) {
     verticalRotation = -.01;
-    //horrizontalRotation = 0;
   }
   else {
     verticalRotation = 0;
@@ -682,11 +573,9 @@ function mouseDragged() {
     
   if(mouseX > pmouseX) {
     horrizontalRotation = -.01;
-    //verticalRotation = 0;
   }
   else if(mouseX < pmouseX) {
     horrizontalRotation = .01;
-    //verticalRotation = 0;
   }
   
   
@@ -700,35 +589,5 @@ function mouseWheel() {
   zoom = zoom-event.wheelDelta/10;
   
 }
-/*
-function keyPressed() {
-  if(keyCode == UP_ARROW) {
-    verticalRotation = -.005;
-    horrizontalRotation = 0;
-  }
-  else if(keyCode == DOWN_ARROW) {
-    verticalRotation = .005;
-    horrizontalRotation = 0;
-  }
-  else if(keyCode == LEFT_ARROW) {
-    verticalRotation = 0;
-    horrizontalRotation = -.01;
-  }
-  else if(keyCode == RIGHT_ARROW) {
-    verticalRotation = 0;
-    horrizontalRotation = .01;
-  }
-  
-}
-*/
-function keyReleased() {
-  verticalRotation = 0;
-  horrizontalRotation = 0;
-}
 
-function draw() {
-  
-  
-  
-  
-}
+function draw() {}
