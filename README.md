@@ -1,3 +1,5 @@
 # Solar-Simulator
-project
+Final Adv. Computer Science Project
+
+My code is in sketch.js
 
