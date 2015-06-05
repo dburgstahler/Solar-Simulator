@@ -1,3 +1,21 @@
+/*
+Name: David Burgstahler
+Project: Solar Simulator- 3D Simulation of the Solar System
+Libraries used: p5.js, p5.dom.js, three.js
+date: 6/4/15
+
+Basic camera controls:
+drag left to rotate counter clockwise
+drag right to rotate clockwise
+drag up to rotate dowm
+drag down to rotate up
+
+Zoom with mouse wheel:
+forward zooms in
+backward zooms out
+*/
+
+
 function setup() {
   
   canvas = createCanvas(0,0);
